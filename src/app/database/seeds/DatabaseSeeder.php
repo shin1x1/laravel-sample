@@ -11,8 +11,14 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         Eloquent::unguard();
+        DB::statement("SET foreign_key_checks = 0");
 
-        // $this->call('UserTableSeeder');
+        DB::table('reservations')->truncate();
+
+        $this->call('UsersSeeder');
+        $this->call('BooksSeeder');
+
+        DB::statement("SET foreign_key_checks = 1");
     }
 
 }
