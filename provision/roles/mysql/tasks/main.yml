@@ -16,7 +16,7 @@
   service: name=mysqld state=started enabled=yes
 
 - name: Create mysql user
-  mysql_user: name=app password=pass priv=*.*:ALL state=present
+  mysql_user: name=vagrant password=pass priv=*.*:ALL state=present
 
 - name: Create mysql database
   mysql_db: name={{ item }} state=present encoding=utf8
