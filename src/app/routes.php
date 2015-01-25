@@ -1,20 +1,17 @@
 <?php
+$apiPrefix = '/api/v1';
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the Closure to execute when that URI is requested.
-|
-*/
-
-Route::get('/', function () {
-    return View::make('hello');
+Route::get($apiPrefix . '/ping', function () {
+    return Response::json('pong');
 });
 
-Route::get('/api/ping', function () {
-    return Response::json('pong');
+Route::filter('api_auth', '\Gihyo\BookReservation\Filter\ApiAuthFilter');
+Route::pattern('reservation_code', '[a-zA-Z0-9]+');
+
+Route::group(['before' => 'api_auth'], function () use ($apiPrefix) {
+    $controller = '\Gihyo\BookReservation\Controller\ReservationController';
+    Route::post($apiPrefix . '/reservation', $controller . '@create');
+    Route::get($apiPrefix . '/reservations', $controller . '@index');
+    Route::put($apiPrefix . '/reservation/{reservation_code}', $controller . '@update');
+    Route::delete($apiPrefix . '/reservation/{reservation_code}', $controller . '@delete');
 });
