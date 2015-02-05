@@ -11,6 +11,10 @@
 |
 */
 
+use Gihyo\BookReservation\Exception\PreconditionException;
+use Symfony\Component\HttpFoundation\Response as Res;
+
+
 App::before(function ($request) {
     //
 });
@@ -79,3 +83,13 @@ Route::filter('csrf', function () {
         throw new Illuminate\Session\TokenMismatchException;
     }
 });
+
+App::error(
+    function (PreconditionException $e) {
+        $response = [
+            'error' => 'pre_conditions',
+            'messages' => [$e->getMessage()],
+        ];
+        return Response::json($response, Res::HTTP_BAD_REQUEST);
+    }
+);

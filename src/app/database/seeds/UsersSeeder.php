@@ -1,7 +1,6 @@
 <?php
 
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
 
 class UsersSeeder extends Seeder
 {
@@ -12,7 +11,7 @@ class UsersSeeder extends Seeder
     {
         DB::table('users')->truncate();
 
-        $users = Collection::make([
+        $users = [
             [
                 'api_token' => 'token1',
                 'name' => '大阪 太郎',
@@ -25,14 +24,14 @@ class UsersSeeder extends Seeder
                 'api_token' => 'token3',
                 'name' => '東京 次郎',
             ],
-        ]);
+        ];
 
-        $users->each(function ($item) {
-            $item['created_at'] = Carbon::now();
-            $item['updated_at'] = Carbon::now();
+        foreach ($users as $v) {
+            $v['created_at'] = Carbon::now();
+            $v['updated_at'] = Carbon::now();
 
-            DB::table('users')->insert($item);
-        });
+            DB::table('users')->insert($v);
+        }
     }
 }
 

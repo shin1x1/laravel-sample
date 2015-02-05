@@ -1,7 +1,6 @@
 <?php
 
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
 
 class BooksSeeder extends Seeder
 {
@@ -14,7 +13,7 @@ class BooksSeeder extends Seeder
     {
         DB::table('books')->truncate();
 
-        $books = Collection::make([
+        $books = [
             [
                 'asin' => 'B00F418SQ8',
                 'title' => 'Vagrant入門ガイド',
@@ -33,14 +32,14 @@ class BooksSeeder extends Seeder
                 'price' => 3110,
                 'inventory' => 2,
             ],
-        ]);
+        ];
 
-        $books->each(function ($item) {
-            $item['created_at'] = Carbon::now();
-            $item['updated_at'] = Carbon::now();
+        foreach ($books as $v) {
+            $v['created_at'] = Carbon::now();
+            $v['updated_at'] = Carbon::now();
 
-            DB::table('books')->insert($item);
-        });
+            DB::table('books')->insert($v);
+        }
     }
 }
 
